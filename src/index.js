@@ -18,7 +18,8 @@ export default function htmlPlugin(options = {}) {
       }
       let ngModule = options.module || 'ng'
       let html = JSON.stringify(minify(code, options.htmlMinifierOptions || htmlMinifierOptions ))
-      let result = `let path = '${jsesc(id)}'; angular.module('${ngModule}').run(['$templateCache', c => { c.put(path, ${html}) }]); export default path;`
+      let path = id.replace(process.cwd(), '');
+      let result = `var path = '${jsesc(path)}'; angular.module('${ngModule}').run(['$templateCache', c => { c.put(path, ${html}) }]); export default path;`
       return {
         code: result,
         map: {

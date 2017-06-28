@@ -24,7 +24,8 @@ function htmlPlugin(options) {
       }
       var ngModule = options.module || 'ng';
       var html = JSON.stringify(htmlMinifier.minify(code, options.htmlMinifierOptions || htmlMinifierOptions ));
-      var result = "let path = '" + (jsesc(id)) + "'; angular.module('" + ngModule + "').run(['$templateCache', c => { c.put(path, " + html + ") }]); export default path;";
+      var path = id.replace(process.cwd(), '');
+      var result = "var path = '" + (jsesc(path)) + "'; angular.module('" + ngModule + "').run(['$templateCache', c => { c.put(path, " + html + ") }]); export default path;";
       return {
         code: result,
         map: {
