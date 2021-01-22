@@ -19,6 +19,10 @@ export default function htmlPlugin(options = {}) {
       let ngModule = options.module || 'ng'
       let html = JSON.stringify(minify(code, options.htmlMinifierOptions || htmlMinifierOptions ))
       let path = id.replace(process.cwd(), '');
+      if(options.processPath){
+        // optionally modify the path since they are relative to the repo root dir
+        path = path.replace(options.processPath.find, options.processPath.replace);
+      }
       let result = `var path = '${jsesc(path)}'; angular.module('${ngModule}').run(['$templateCache', function(tc){tc.put(path, ${html})}]); export default path;`
       return {
         code: result,

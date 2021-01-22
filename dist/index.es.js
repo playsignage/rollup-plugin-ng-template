@@ -21,6 +21,10 @@ function htmlPlugin(options) {
       var ngModule = options.module || 'ng';
       var html = JSON.stringify(minify(code, options.htmlMinifierOptions || htmlMinifierOptions ));
       var path = id.replace(process.cwd(), '');
+      if(options.processPath){
+        // optionally modify the path since they are relative to the repo root dir
+        path = path.replace(options.processPath.find, options.processPath.replace);
+      }
       var result = "var path = '" + (jsesc(path)) + "'; angular.module('" + ngModule + "').run(['$templateCache', function(tc){tc.put(path, " + html + ")}]); export default path;";
       return {
         code: result,
