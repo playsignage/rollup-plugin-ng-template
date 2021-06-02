@@ -21,6 +21,7 @@ function htmlPlugin(options) {
       var ngModule = options.module || 'ng';
       var html = JSON.stringify(minify(code, options.htmlMinifierOptions || htmlMinifierOptions ));
       var path = id.replace(process.cwd(), '');
+      path = path.replace(/\\/g, '/'); // fix for Windows
       if(options.processPath){
         // optionally modify the path since they are relative to the repo root dir
         path = path.replace(options.processPath.find, options.processPath.replace);
